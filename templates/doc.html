@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documents</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@700;900&family=Lora:wght@400;500;600;700&family=Poppins:wght@600;700;900&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/2a502d3dda.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <!-- Mail notification status -->
+    {% with messages = get_flashed_messages(with_categories=True) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="notification {{ category }}">
+                <p class="message">{{ message }}</p>
+                <button onclick="delMessageBox()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+    <section class="home" id="home" style="border-bottom: 0;padding-bottom: 0;">
+        <div class="header">
+            <div class="header-item1"><img src="static/images/tk-logo.png" alt="logo" width="90" height="50"></div>
+            <div class="header-item2"><a href="#contact-form" onclick="openForm()">Hire Me</a></div>
+        </div>
+
+        <!-- Form -->
+        <div id="contact-form">
+            <button onclick="closeForm()"><i class="fa-solid fa-xmark"></i></button>
+            <form name="contact" action="{{ url_for('home') }}" method="post" autocomplete="off">
+                <p>Contact Form</p>
+                <div class="name-field">
+                    <input type="text" id="name-input" name="name" required />
+                    <label class="name-label" for="name-input">NAME*</label>
+                </div>
+
+                <div class="company-field">
+                    <input type="text" id="company-input" name="company" required />
+                    <label class="company-label" for="company-input">COMPANY*</label>
+                </div>
+
+                <div class="email-field">
+                    <input type="email" id="email-input" name="email" onblur="getVal()" onfocus="getFocus()" oninvalid="isInvalid()" pattern="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?" required />
+                    <label class="email-label" for="email-input">E-MAIL*</label>
+                </div>
+
+                <div class="message">
+                    <textarea id="message-box" name="message" required></textarea>
+                    <label class="message-label" for="message-box">MESSAGE*</label>
+                </div>
+
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+
+                <div class="submit-btn">
+                    <button type="submit">SEND</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="document">
+            <img id="python" src="static/images/python.jpg" alt="certificate" width="1600" height="1190">
+            <img id="sql" src="static/images/sql.jpg" alt="certificate" width="1600" height="1190">
+        </div>
+
+        <div class="footer">
+            <h4>Contact</h4>
+            <div class="social-icons">
+                <a href="https://www.linkedin.com/in/tarun-khubchandani-20tk" target="_blank"><i class="fa-brands fa-linkedin"></i></a>
+                <a href="https://github.com/TkTarun20" target="_blank"><i class="fa-brands fa-github"></i></a>
+                <a href="https://twitter.com/TarunKhubchand6?t=j6qGBLCW_XrL-SDqQg_LcQ&s=09" target="_blank"><i class="fa-brands fa-twitter"></i></a>
+            </div>
+            <p>&#169; {{ current_year }} Tarun Khubchandani</p>
+        </div>
+    </section>
+
+    <script>
+        // script for dismissing notification
+        function delMessageBox() {
+            const element = document.querySelector(".notification");
+            element.remove();
+        }
+
+        // script to control form
+        function getVal() {
+            const val = document.querySelector('#email-input').value;
+            if (val.length != 0) {
+                document.getElementsByClassName('email-label')[0].style.fontSize = "10px";
+                document.getElementsByClassName('email-label')[0].style.top = "10%";
+                document.getElementsByClassName('email-label')[0].style.marginTop = "5px";
+                document.getElementsByClassName('email-label')[0].style.letterSpacing = "initial";
+                document.getElementsByClassName('email-label')[0].style.textDecoration = "underline";
+            } else {
+                document.getElementsByClassName('email-label')[0].style.fontSize = "22px";
+                document.getElementsByClassName('email-label')[0].style.top = "50%";
+                document.getElementsByClassName('email-label')[0].style.marginTop = "0";
+                document.getElementsByClassName('email-label')[0].style.letterSpacing = "2px";
+                document.getElementsByClassName('email-label')[0].style.textDecoration = "none";
+            }
+        }
+
+        function getFocus() {
+            document.getElementsByClassName('email-label')[0].style.fontSize = "10px";
+            document.getElementsByClassName('email-label')[0].style.top = "10%";
+            document.getElementsByClassName('email-label')[0].style.marginTop = "5px";
+            document.getElementsByClassName('email-label')[0].style.letterSpacing = "initial";
+            document.getElementsByClassName('email-label')[0].style.textDecoration = "underline";
+        }
+
+        function openForm() {
+            document.getElementById('contact-form').style.display = "block";
+        }
+
+        function closeForm() {
+            document.getElementById('contact-form').style.display = "none";
+            document.forms['contact'].reset();
+            
+            document.getElementsByClassName('email-label')[0].style.fontSize = "22px";
+            document.getElementsByClassName('email-label')[0].style.top = "50%";
+            document.getElementsByClassName('email-label')[0].style.marginTop = "0";
+            document.getElementsByClassName('email-label')[0].style.letterSpacing = "2px";
+            document.getElementsByClassName('email-label')[0].style.textDecoration = "none";
+
+            // removes form href '#contact-form' from home url without reloading it
+            history.replaceState('', document.title, window.location.origin + window.location.pathname + window.location.search);
+        }
+    </script>
+</body>
+</html>

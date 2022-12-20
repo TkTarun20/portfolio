@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tarun Khubchandani</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@700;900&family=Lora:wght@400;500;600;700&family=Poppins:wght@600;700;900&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/2a502d3dda.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <!-- Mail notification status -->
+    {% with messages = get_flashed_messages(with_categories=True) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="notification {{ category }}">
+                <p class="message">{{ message }}</p>
+                <button onclick="delMessageBox()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+    <section class="home" id="home">
+        <div class="header">
+            <div class="header-item1"><img src="static/images/tk-logo.png" alt="logo" width="90" height="50"></div>
+            <div class="header-item2"><a href="#contact-form" onclick="openForm()">Hire Me</a></div>
+        </div>
+        <div class="home-container">
+            <div class="home-item1">
+                <div>
+                    <img src="static/images/profile.png" alt="Profile" width="2058" height="2142">
+                    <div class="image-holder"></div>
+                </div>
+            </div>
+            <div class="home-item2">
+                <div class="handle handle-1"></div>
+                <div class="handle handle-2"></div>
+            </div>
+            <div class="home-item3">
+                <div>
+                    <p style="margin-bottom: 0;"><span id="greet-text">Hi</span>, I am</p>
+                    <div class="my-name">Tarun Khubchandani</div>
+                    <p class="description">An aspiring Python Developer, from <span id="country">INDIA</span>. Due to interest in Data Science, ML & AI, I chose to change my career from Civil Engineering to Python development and contribute in the field of ML and AI. For now, I develop RESTful web APIs.</p>
+                    <div class="connect">
+                        <div><a href="static/document/resume.pdf#toolbar=0" target="_blank">Resume</a></div>
+                        <div><button onclick="showCard()">Connect</button></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <button class="nav-button hide" onclick="change('hide')"><i id="hide" class="fa-solid fa-eye"></i></button>
+    <div class="nav" id="nav">
+        <div class="nav-item nav-item1">
+            <a href="#home"><i class="fa-solid fa-house-chimney-window"></i></a>
+            <span>Home</span>
+        </div>
+        <div class="nav-item nav-item2">
+            <a href="#skill"><i class="fa-solid fa-glasses"></i></a>
+            <span>Skill</span>
+        </div>
+        <div class="nav-item nav-item3">
+            <a href="#project"><i class="fa-solid fa-bars-progress"></i></a>
+            <span>Project</span>
+        </div>
+        <div class="nav-item nav-item4">
+            <a href="#certification"><i class="fa-solid fa-award"></i></a>
+            <span>Certification</span>
+        </div>
+    </div>
+    <div class="my-card">
+        <div>
+            <img src="static/images/card_dp.png" alt="Profile" width="2341" height="2220">
+        </div>
+        <div class="max-card"><button onclick="maximizeCard()"><i class="fa-solid fa-angles-up"></i></button></div>
+        <div class="close-card"><button onclick="closeCard()"><i class="fa-solid fa-minus"></i></button></div>
+        <p class="name">Tarun Khubchandani</p>
+        <p class="title">Python/Django Developer</p>
+        <div class="my-skills">Python | Django | Flask | HTML | CSS | SQL | PostgreSQL</div>
+        <button id="hire-btn" onclick="openForm()">Hire Me</button>
+        <div class="social-icons">
+            <a href="https://www.linkedin.com/in/tarun-khubchandani-20tk" target="_blank"><i class="fa-brands fa-linkedin-in" style="color: #0073b1;"></i></a>
+            <a href="https://github.com/TkTarun20" target="_blank"><i class="fa-brands fa-github"></i></a>
+            <a href="https://twitter.com/TarunKhubchand6?t=j6qGBLCW_XrL-SDqQg_LcQ&s=09" target="_blank"><i class="fa-brands fa-twitter" style="color: #1DA1F2;"></i></a>
+        </div>
+    </div>
+    <!-- Form -->
+    <div id="contact-form">
+        <button onclick="closeForm()"><i class="fa-solid fa-xmark"></i></button>
+        <form name="contact" action="{{ url_for('home') }}" method="post" autocomplete="off">
+            <p>Contact Form</p>
+            <div class="name-field">
+                <input type="text" id="name-input" name="name" required />
+                <label class="name-label" for="name-input">NAME*</label>
+            </div>
+
+            <div class="company-field">
+                <input type="text" id="company-input" name="company" required />
+                <label class="company-label" for="company-input">COMPANY*</label>
+            </div>
+
+            <div class="email-field">
+                <input type="email" id="email-input" name="email" onblur="getVal()" onfocus="getFocus()" oninvalid="isInvalid()" pattern="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?" required />
+                <label class="email-label" for="email-input">E-MAIL*</label>
+            </div>
+
+            <div class="message">
+                <textarea id="message-box" name="message" required></textarea>
+                <label class="message-label" for="message-box">MESSAGE*</label>
+            </div>
+
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+
+            <div class="submit-btn">
+                <button type="submit">SEND</button>
+            </div>
+        </form>
+    </div>
+
+    <section class="skill" id="skill">
+        <h1>Skills</h1>
+        <div class="slide-container">
+            <div class="skill-main myslides fade">
+
+                    <div class="skill-heading"><h2>Languages</h2></div>  
+
+                    <div class="decorator left-decorator"></div>
+
+                    <div class="skill-category">
+                        <div class="skill-inner">
+                            <div class="skill-ratings">
+                                <h4>Programming</h4>
+                                <p>Python -
+                                    <span><i class="fa-solid fa-1"></i>
+                                    <i class="fa-solid fa-2"></i>
+                                    <i class="fa-solid fa-3"></i></span>
+                                    <i class="fa-solid fa-4"></i>
+                                    <i class="fa-solid fa-5"></i>
+                                </p>
+                            </div>
+                            <div class="skill-ratings">
+                                <h4>Markup</h4>
+                                <p>HTML - 
+                                    <span><i class="fa-solid fa-1"></i>
+                                        <i class="fa-solid fa-2"></i>
+                                        <i class="fa-solid fa-3"></i></span>
+                                        <i class="fa-solid fa-4"></i>
+                                        <i class="fa-solid fa-5"></i>
+                                </p>
+                            </div>
+                            <div class="skill-ratings">
+                                <h4>Template</h4>
+                                <p>Jinja - 
+                                    <span><i class="fa-solid fa-1"></i>
+                                        <i class="fa-solid fa-2"></i>
+                                        <i class="fa-solid fa-3"></i></span>
+                                        <i class="fa-solid fa-4"></i>
+                                        <i class="fa-solid fa-5"></i>
+                                </p>
+                            </div>
+                            <div class="skill-ratings">
+                                <h4>Stylesheet</h4>
+                                <p>CSS - 
+                                    <span><i class="fa-solid fa-1"></i>
+                                        <i class="fa-solid fa-2"></i></span>
+                                        <i class="fa-solid fa-3"></i>
+                                        <i class="fa-solid fa-4"></i>
+                                        <i class="fa-solid fa-5"></i>
+                                </p>
+                            </div>
+                            <div class="skill-ratings">
+                                <h4>Query</h4>
+                                <p>SQL - 
+                                    <span><i class="fa-solid fa-1"></i>
+                                        <i class="fa-solid fa-2"></i>
+                                        <i class="fa-solid fa-3"></i></span>
+                                        <i class="fa-solid fa-4"></i>
+                                        <i class="fa-solid fa-5"></i>
+                                </p>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="decorator right-decorator"></div>
+            </div>
+
+            <div class="skill-main myslides fade">
+
+                    <div class="skill-heading"><h2>Frameworks</h2></div>
+                    
+
+                    <div class="decorator left-decorator"></div>
+                    <div class="skill-category">
+                        <div class="skill-inner">
+                            <div class="skill-ratings" style="margin: 20px 0;">
+                                <h4>Python</h4>
+                                <p>Django - 
+                                    <span>
+                                        <i class="fa-solid fa-1"></i>
+                                        <i class="fa-solid fa-2"></i>
+                                    </span>
+                                    <i class="fa-solid fa-3"></i>
+                                    <i class="fa-solid fa-4"></i>
+                                    <i class="fa-solid fa-5"></i>
+                                </p>
+                                <p>Flask - 
+                                    <span>
+                                        <i class="fa-solid fa-1"></i>
+                                        <i class="fa-solid fa-2"></i>
+                                    </span>
+                                    <i class="fa-solid fa-3"></i>
+                                    <i class="fa-solid fa-4"></i>
+                                    <i class="fa-solid fa-5"></i>
+                                </p>
+                            </div>
+                            <div class="skill-ratings" style="margin: 20px 0;">
+                                <h4>CSS</h4>
+                                <p>Bootstrap -
+                                    <span><i class="fa-solid fa-1"></i>
+                                        <i class="fa-solid fa-2"></i></span>
+                                        <i class="fa-solid fa-3"></i>
+                                        <i class="fa-solid fa-4"></i>
+                                        <i class="fa-solid fa-5"></i>
+                                </p>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="decorator right-decorator"></div>
+            </div>
+
+            <a class="next" onclick="plusSlides(-1)"><i class="fa-solid fa-chevron-right"></i></a>
+            <a class="prev" onclick="plusSlides(1)"><i class="fa-solid fa-chevron-left"></i></a>
+        </div>
+    </section>
+
+    <section class="project" id="project">
+        <h1>Projects</h1>
+        <div class="card-main">
+                <div class="card-item fade" id="first">
+                    <a href="https://restro-food.onrender.com" target="_blank"><i class="fa-solid fa-sheet-plastic"></i></a>
+                    <i class="fa-solid fa-bookmark"></i>
+                    <h3><a href="https://restro-food.onrender.com" target="_blank">Restro-RESTful API</a></h3>
+                    <div class="description">A browsable RESTful API developed using "django" framework. It lets you view various food categories and its food items. It allows to create carts and view orders.</div>
+                </div>
+
+
+                <div class="card-item fade" id="second">
+                    <a href="https://github.com/TkTarun20/flappy-bird-clone" target="_blank"><i class="fa-solid fa-sheet-plastic"></i></a>
+                    <i class="fa-solid fa-bookmark"></i>
+                    <h3><a href="https://github.com/TkTarun20/flappy-bird-clone" target="_blank">Flappy Bird - Clone</a></h3>
+                    <div class="description">I have tried to built the close clone of famous "Flappy Bird" game using "pygame" library. This game was originally developed by "Dong Nguyen", but he removed it from the app store due to its addictiveness.</div>
+                </div>
+        </div>
+    </section>
+
+    <section class="certification" id="certification">
+        <h1>Certifications</h1>
+        <div class="certificate-container">
+            <ul class="certificate-list">
+                <li class="list-1"><a href="{{ url_for('show_certificate', _anchor='python') }}">Python Bootcamp, <i>Udemy</i></a></li>
+                <li class="list-2"><a href="{{ url_for('show_certificate', _anchor='sql') }}">SQL and Databases Bootcamp, <i>Udemy</i></a></li>
+            </ul>
+        </div>
+        <div class="hire"><a href="#" onclick="openForm()">Hire Me</a></div>
+        <div class="footer">
+            <h4>Contact</h4>
+            <div class="social-icons">
+                <a href="https://www.linkedin.com/in/tarun-khubchandani-20tk" target="_blank"><i class="fa-brands fa-linkedin"></i></a>
+                <a href="https://github.com/TkTarun20" target="_blank"><i class="fa-brands fa-github"></i></a>
+                <a href="https://twitter.com/TarunKhubchand6?t=j6qGBLCW_XrL-SDqQg_LcQ&s=09" target="_blank"><i class="fa-brands fa-twitter"></i></a>
+            </div>
+            <p>&#169; {{ current_year }} Tarun Khubchandani</p>
+        </div>
+    </section>
+
+    <script>
+        // script for current active nav link
+        let mainNavLinks = document.querySelectorAll(".nav .nav-item a");
+        let mainSections = document.querySelectorAll("section");
+
+        let lastId;
+        let cur = [];
+
+        // This should probably be throttled.
+        // Especially because it triggers during smooth scrolling.
+        // https://lodash.com/docs/4.17.10#throttle
+        // You could do like...
+        window.addEventListener("scroll", () => {
+        _.throttle(doThatStuff, 100);
+        });
+        // Only not doing it here to keep this Pen dependency-free.
+
+        window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY + 180;
+
+        mainNavLinks.forEach(link => {
+            let section = document.querySelector(link.hash);
+
+            if (
+            section.offsetTop <= fromTop &&
+            section.offsetTop + section.offsetHeight > fromTop
+            ) {
+            link.classList.add("current");
+            } else {
+            link.classList.remove("current");
+            }
+        });
+        });
+
+        // script for dismissing notification
+        function delMessageBox() {
+            const element = document.querySelector(".notification");
+            element.remove();
+        }
+
+        // script to control form
+        function getVal() {
+            const val = document.querySelector('#email-input').value;
+            if (val.length != 0) {
+                document.getElementsByClassName('email-label')[0].style.fontSize = "10px";
+                document.getElementsByClassName('email-label')[0].style.top = "10%";
+                document.getElementsByClassName('email-label')[0].style.marginTop = "5px";
+                document.getElementsByClassName('email-label')[0].style.letterSpacing = "initial";
+                document.getElementsByClassName('email-label')[0].style.textDecoration = "underline";
+            } else {
+                document.getElementsByClassName('email-label')[0].style.fontSize = "22px";
+                document.getElementsByClassName('email-label')[0].style.top = "50%";
+                document.getElementsByClassName('email-label')[0].style.marginTop = "0";
+                document.getElementsByClassName('email-label')[0].style.letterSpacing = "2px";
+                document.getElementsByClassName('email-label')[0].style.textDecoration = "none";
+            }
+        }
+
+        function getFocus() {
+            document.getElementsByClassName('email-label')[0].style.fontSize = "10px";
+            document.getElementsByClassName('email-label')[0].style.top = "10%";
+            document.getElementsByClassName('email-label')[0].style.marginTop = "5px";
+            document.getElementsByClassName('email-label')[0].style.letterSpacing = "initial";
+            document.getElementsByClassName('email-label')[0].style.textDecoration = "underline";
+        }
+
+        function openForm() {
+            document.getElementById('contact-form').style.display = "block";
+        }
+
+        function closeForm() {
+            document.getElementById('contact-form').style.display = "none";
+            document.forms['contact'].reset();
+            
+            document.getElementsByClassName('email-label')[0].style.fontSize = "22px";
+            document.getElementsByClassName('email-label')[0].style.top = "50%";
+            document.getElementsByClassName('email-label')[0].style.marginTop = "0";
+            document.getElementsByClassName('email-label')[0].style.letterSpacing = "2px";
+            document.getElementsByClassName('email-label')[0].style.textDecoration = "none";
+
+            // removes form href '#contact-form' from home url without reloading it
+            history.replaceState('', document.title, window.location.origin + window.location.pathname + window.location.search);
+        }
+
+        // script to swap show and hide icon
+        function change (iconID){
+            if(document.getElementById(iconID).className=="fa-solid fa-eye") {
+                document.getElementById(iconID).className = "fa-solid fa-eye-slash";
+                document.getElementById('nav').style.transform = "scaleX(0) translateX(-50%)";
+            }
+            else {
+                document.getElementById(iconID).className = "fa-solid fa-eye";
+                document.getElementById('nav').style.transform = "scaleX(1) translateX(-50%)";
+            };
+        }
+
+        // script to control media query
+        // Create a MediaQueryList object
+        const navObj = window.matchMedia("(max-width: 992px)")
+
+        function showNavbar(x) {
+            if (x.matches) {
+                document.getElementById('nav').style.transform = "scaleX(1) translateY(-50%)";
+            } else {
+                document.getElementById('nav').style.transform = "translateX(-50%)";
+                document.getElementById('hide').className = "fa-solid fa-eye";
+            };
+        }
+
+        // Add the match function as a listener for state changes:
+        navObj.addListener(showNavbar)
+
+        // Call the match function at run time:
+        showNavbar(navObj);
+
+        // script to control card
+        function showCard() {
+            document.querySelector('.my-card').style.display = "block";
+        }
+
+        function closeCard() {
+            document.querySelector('.my-card').style.display = "none";
+            document.querySelector('.my-card').style.height = "250px";
+
+            document.getElementsByClassName('my-skills')[0].style.animationPlayState = "paused"
+            document.getElementById('hire-btn').style.animationPlayState = "paused";
+        }
+
+        function maximizeCard() {
+            document.querySelector('.my-card').style.height = "400px";
+            document.getElementsByClassName('my-skills')[0].style.animation = "animate-skill 200ms ease-out 1s forwards";
+            document.getElementById('hire-btn').style.animation = "animate-btn 200ms 1s forwards ease-out";
+            document.getElementsByClassName('social-icons')[0].style.padding = "15px";
+            document.getElementsByClassName('social-icons')[0].style.bottom = "5px";
+        }
+
+        // script for controlling slide function
+        let slideIndex = 1;
+        showSlides(slideIndex);
+
+        // Next/previous controls
+        function plusSlides(n) {
+        showSlides(slideIndex += n);
+        }
+
+        function showSlides(n) {
+        let i;
+        let slides = document.getElementsByClassName("myslides");
+        if (n > slides.length) {slideIndex = 1}
+        if (n < 1) {slideIndex = slides.length}
+        for (i = 0; i < slides.length; i++) {
+            slides[i].style.display = "none";
+        }
+
+        slides[slideIndex-1].style.display = "block";
+        }
+    </script>
+
+</body>
+</html>
